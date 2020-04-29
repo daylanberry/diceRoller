@@ -14,7 +14,8 @@ class RollDice extends Component {
 
     this.state = {
       first: 'one',
-      second: 'one'
+      second: 'one',
+      rolling: false
     }
   }
 
@@ -23,9 +24,9 @@ class RollDice extends Component {
 
     const second = this.props.sides[Math.floor(Math.random() * this.props.sides.length)]
 
-    this.setState({first, second})
-    console.log(first)
-    console.log(second)
+    this.setState({first, second, rolling: true})
+
+    setTimeout(() => this.setState({rolling: false}), 1000)
   }
 
 
@@ -33,10 +34,12 @@ class RollDice extends Component {
     return (
       <div className='dice'>
         <div className='roll-container'>
-        <Dice num={this.state.first}/>
-        <Dice num={this.state.second}/>
+        <Dice num={this.state.first} rolling={this.state.rolling}/>
+        <Dice num={this.state.second} rolling={this.state.rolling}/>
         </div>
-        <button onClick={() => this.roll()}>roll</button>
+        <button onClick={() => this.roll()} disabled={this.state.rolling}>
+          {this.state.rolling ? 'rolling': 'Roll Dice'}
+          </button>
       </div>
     )
   }
